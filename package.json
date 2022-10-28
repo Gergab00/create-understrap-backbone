@@ -30,6 +30,8 @@
     "colors": "^1.4.0",
     "inquirer": "^7.3.3",
     "make-dir": "^3.0.0",
-		"mustache": "^4.0.0"
+    "mustache": "^4.0.0",
+    "read-pkg": "^7.1.0",
+    "write-pkg": "^4.0.0"
   }
 }

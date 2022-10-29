@@ -1,11 +1,12 @@
 const Mustache = require("mustache");
 const writePackage = require("write-pkg");
+const extract = require('extract-comments');
 const fs = require('fs');
 require('colors');
 
 const createStylePackage = async (template) => {
 
-    const data = fs.readFile('./templates/style.css.mustache', 'utf8', async (err, data) => {
+    fs.readFile('./templates/style.css.mustache', 'utf8', async (err, data) => {
         if (err) {
           console.error(err);
           return;
@@ -120,6 +121,37 @@ const createStylePackage = async (template) => {
       });
 }
 
+const createFrontpage = async () => {
+  let buf = fs.readFileSync('../../style.css', 'utf8');
+  const parsed = extract.block(buf);
+  let parsed_arr = parsed[0]['value'].split('\r\n');
+  parsed_arr.shift();
+  let dataMap = new Map();
+  parsed_arr.forEach(element => {
+    const newElement = element.split(': ');
+    dataMap.set(newElement[0].replace(' ', '_').toLowerCase(), newElement[1].trimStart());
+  });
+
+  console.log("parsed: ", dataMap);
+
+  fs.readFile('./templates/front-page.php.mustache', 'utf8', async (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    const output = Mustache.render(data.toString(), Object.fromEntries(dataMap));
+
+    fs.writeFile('../front-page.php', output, err => {
+      if (err) {
+        console.error(err);
+      }
+      // file written successfully
+      console.log('File '.green + 'front-page.php'.bgWhite.black+' create successfully.'.green)
+    })
+  });
+}
+
 module.exports = {
-    createStylePackage
+  createStylePackage,
+  createFrontpage
 }

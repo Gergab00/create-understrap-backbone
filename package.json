@@ -28,6 +28,7 @@
   "homepage": "https://github.com/Gergab00/create-understrap-backbone#readme",
   "dependencies": {
     "colors": "^1.4.0",
+    "extract-comments": "^1.1.0",
     "inquirer": "^7.3.3",
     "make-dir": "^3.0.0",
     "mustache": "^4.0.0",

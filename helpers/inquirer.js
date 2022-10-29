@@ -31,6 +31,20 @@ const questions = [
     }
 ];
 
+const questions_theme_parts = [
+    {
+        type: 'list',
+        name: 'options',
+        message: 'What would you like to do?',
+        choices: [
+            {
+                value: 1,
+                name: `${ '1.'.green } Create Frontpage file.`
+            },
+        ]
+    }
+]
+
 const inquirerMenu = async() => {
 
     console.clear();
@@ -40,6 +54,16 @@ const inquirerMenu = async() => {
     console.log('=============================================================\n'.cyan);
 
     const { options } = await inquirer.prompt(questions);
+
+    return options;
+}
+
+const templateThemeMenu = async () => {
+    console.clear();
+    console.log("Select the type of Theme Part that you want to create.".green);
+    console.log("WARNING:".red, "If the file already exists it will be overwritte.".yellow);
+
+    const { options } = await inquirer.prompt(questions_theme_parts);
 
     return options;
 }
@@ -82,5 +106,6 @@ const readInput = async( message, d ) => {
 module.exports = {
     inquirerMenu,
     pause,
-    readInput
+    readInput,
+    templateThemeMenu
 }

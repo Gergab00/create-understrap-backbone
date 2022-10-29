@@ -1,5 +1,5 @@
-const { readInput, inquirerMenu, pause } = require('./helpers/inquirer');
-const { create } = require('./models/create');
+const { readInput, inquirerMenu, pause, templateThemeMenu } = require('./helpers/inquirer');
+const { createStylePackage, createFrontpage } = require('./models/create');
 
 const main = async() => {
 
@@ -21,6 +21,7 @@ const main = async() => {
                 const author = await readInput('Author: ', 'the Understrap Contributors');
                 const author_uri = await readInput('Author URI: ', 'https://github.com/understrap/understrap-child/graphs/contributors');
                 const version = await readInput('Version: ', '1.1.0');
+                const git_uri = await readInput('Git URI: ', 'https://github.com/understrap/understrap-child.git');
                 
                 const template = {
                 "theme_name" : theme_name,
@@ -29,16 +30,28 @@ const main = async() => {
                 "theme_description" : theme_description,
                 "author" : author,
                 "author_uri" : author_uri,
-                "version" : version,
+                "version": version,
+                "git_uri": git_uri
                 }
 
-                await create(template);
+                await createStylePackage(template);
 
-                // Mostrar resultados
-                console.clear();
-                console.log('\nInformación de la ciudad\n'.green);
+                break;
+            
+            case 2:
 
-                break;           
+                break;
+            case 3:
+                let opt_2 = await templateThemeMenu();
+
+                switch (opt_2) { 
+                    case 1:
+                        console.log("Creating file, please wait...".cyan)
+                        await createFrontpage().then(() => console.log("File created...".green));
+                        break;
+                }
+                //createThemeParts();
+                break;
 
         }
 

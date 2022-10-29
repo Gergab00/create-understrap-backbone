@@ -6,14 +6,14 @@ require('colors');
 
 const createStylePackage = async (template) => {
 
-    fs.readFile('./templates/style.css.mustache', 'utf8', async (err, data) => {
+    fs.readFile(process.cwd()+'/node_modules/create-understrap-backbone/templates/style.css.mustache', 'utf8', async (err, data) => {
         if (err) {
           console.error(err);
           return;
         }
         const output = Mustache.render(data.toString(), template);
 
-        fs.writeFile('../style.css', output, err => {
+        fs.writeFile(process.cwd()+'/style.css', output, err => {
             if (err) {
               console.error(err);
             }
@@ -22,7 +22,7 @@ const createStylePackage = async (template) => {
         });
       
         await writePackage(
-          '../package.json',
+          process.cwd()+'/package.json',
           Object.fromEntries(
             Object.entries(
               {
@@ -55,6 +55,7 @@ const createStylePackage = async (template) => {
                 "packages-update": "wp-scripts packages-update",
                 "plugin-zip": "wp-scripts plugin-zip",
                 "start": "wp-scripts start --webpack-copy-php",
+                "config": "node ./node_modules/create-understrap-backbone/index.js"
               },
               "engines": {
                 "node": ">=14"
@@ -122,26 +123,28 @@ const createStylePackage = async (template) => {
 }
 
 const createFrontpage = async () => {
-  let buf = fs.readFileSync('../../style.css', 'utf8');
+  let buf = fs.readFileSync(process.cwd() + '/style.css', 'utf8');
   const parsed = extract.block(buf);
   let parsed_arr = parsed[0]['value'].split('\r\n');
-  parsed_arr.shift();
   let dataMap = new Map();
   parsed_arr.forEach(element => {
     const newElement = element.split(': ');
-    dataMap.set(newElement[0].replace(' ', '_').toLowerCase(), newElement[1].trimStart());
+    console.log("size: ", newElement.length);
+    if (newElement.length > 1) {
+      dataMap.set(newElement[0].replace(' ', '_').toLowerCase(), newElement[1].trimStart());
+    }
   });
 
   console.log("parsed: ", dataMap);
 
-  fs.readFile('./templates/front-page.php.mustache', 'utf8', async (err, data) => {
+  fs.readFile(process.cwd() +'/node_modules/create-understrap-backbone/templates/front-page.php.mustache', 'utf8', async (err, data) => {
     if (err) {
       console.error(err);
       return;
     }
     const output = Mustache.render(data.toString(), Object.fromEntries(dataMap));
 
-    fs.writeFile('../front-page.php', output, err => {
+    fs.writeFile(process.cwd() +'/front-page.php', output, err => {
       if (err) {
         console.error(err);
       }

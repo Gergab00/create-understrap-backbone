@@ -122,6 +122,24 @@ const createStylePackage = async (template) => {
       });
 }
 
+const createNavbarOffcanvas = async () => {
+  fs.readFile(process.cwd() +'/node_modules/create-understrap-backbone/templates/navbar-offcanvas-bootstrap5.php.mustache', 'utf8', async (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    const output = Mustache.render(data.toString(), Object.fromEntries(await getDataMap()));
+
+    fs.writeFile(process.cwd() +'/navbar-offcanvas-bootstrap5.php', output, err => {
+      if (err) {
+        console.error(err);
+      }
+      // file written successfully
+      console.log('File '.green + 'navbar-offcanvas-bootstrap5.php'.bgWhite.black+' create successfully.'.green)
+    })
+  });
+}
+
 const createFrontpage = async () => {
   let buf = fs.readFileSync(process.cwd() + '/style.css', 'utf8');
   const parsed = extract.block(buf);
@@ -135,7 +153,7 @@ const createFrontpage = async () => {
     }
   });
 
-  console.log("parsed: ", dataMap);
+  //console.log("parsed: ", dataMap);
 
   fs.readFile(process.cwd() +'/node_modules/create-understrap-backbone/templates/front-page.php.mustache', 'utf8', async (err, data) => {
     if (err) {
@@ -154,7 +172,24 @@ const createFrontpage = async () => {
   });
 }
 
+const getDataMap = async () => {
+  let buf = fs.readFileSync(process.cwd() + '/style.css', 'utf8');
+  const parsed = extract.block(buf);
+  let parsed_arr = parsed[0]['value'].split('\r\n');
+  let dataMap = new Map();
+  parsed_arr.forEach(element => {
+    const newElement = element.split(': ');
+    console.log("size: ", newElement.length);
+    if (newElement.length > 1) {
+      dataMap.set(newElement[0].replace(' ', '_').toLowerCase(), newElement[1].trimStart());
+    }
+  });
+
+  return dataMap;
+}
+
 module.exports = {
   createStylePackage,
-  createFrontpage
+  createFrontpage,
+  createNavbarOffcanvas
 }

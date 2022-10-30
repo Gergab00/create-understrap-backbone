@@ -1,5 +1,5 @@
 const { readInput, inquirerMenu, pause, templateThemeMenu } = require('./helpers/inquirer');
-const { createStylePackage, createFrontpage } = require('./models/create');
+const { createStylePackage, createFrontpage, createNavbarOffcanvas } = require('./models/create');
 
 const main = async() => {
 
@@ -46,12 +46,15 @@ const main = async() => {
 
                 switch (opt_2) { 
                     case 1:
-                        console.log("Creating file, please wait...".cyan)
+                        console.log("Creating file, please wait...".cyan);
                         await createFrontpage().then(() => console.log("File created...".green));
                         break;
+                    case 2:
+                        console.log("Creating file, please wait...".cyan);
+                        await createNavbarOffcanvas().then(() => console.log("File created...".green));
+                        break;
                 }
-                //createThemeParts();
-                break;
+                    break;
 
         }
 

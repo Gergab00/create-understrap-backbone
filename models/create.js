@@ -122,6 +122,10 @@ const createStylePackage = async (template) => {
       });
 }
 
+const createFooter = async () => {
+  await writeTemplate(await getDataMap(), '/footer.php.mustache', '');
+}
+
 const createNavbarOffcanvas = async () => {
   fs.readFile(process.cwd() +'/node_modules/create-understrap-backbone/templates/navbar-offcanvas-bootstrap5.php.mustache', 'utf8', async (err, data) => {
     if (err) {
@@ -130,13 +134,13 @@ const createNavbarOffcanvas = async () => {
     }
     const output = Mustache.render(data.toString(), Object.fromEntries(await getDataMap()));
 
-    fs.writeFile(process.cwd() +'/navbar-offcanvas-bootstrap5.php', output, err => {
+    fs.writeFile(process.cwd() + '/global-templates/navbar-offcanvas-bootstrap5.php', output, err => {
       if (err) {
         console.error(err);
       }
       // file written successfully
-      console.log('File '.green + 'navbar-offcanvas-bootstrap5.php'.bgWhite.black+' create successfully.'.green)
-    })
+      console.log('File '.green + 'navbar-offcanvas-bootstrap5.php'.bgWhite.black + ' create successfully.'.green)
+    });
   });
 }
 
@@ -147,13 +151,10 @@ const createFrontpage = async () => {
   let dataMap = new Map();
   parsed_arr.forEach(element => {
     const newElement = element.split(': ');
-    console.log("size: ", newElement.length);
     if (newElement.length > 1) {
       dataMap.set(newElement[0].replace(' ', '_').toLowerCase(), newElement[1].trimStart());
     }
   });
-
-  //console.log("parsed: ", dataMap);
 
   fs.readFile(process.cwd() +'/node_modules/create-understrap-backbone/templates/front-page.php.mustache', 'utf8', async (err, data) => {
     if (err) {
@@ -179,7 +180,6 @@ const getDataMap = async () => {
   let dataMap = new Map();
   parsed_arr.forEach(element => {
     const newElement = element.split(': ');
-    console.log("size: ", newElement.length);
     if (newElement.length > 1) {
       dataMap.set(newElement[0].replace(' ', '_').toLowerCase(), newElement[1].trimStart());
     }
@@ -188,8 +188,27 @@ const getDataMap = async () => {
   return dataMap;
 }
 
+const writeTemplate = async (dataMap, templateName, path) => {
+  fs.readFile(process.cwd() +'/node_modules/create-understrap-backbone/templates' + templateName, 'utf8', async (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    const output = Mustache.render(data.toString(), Object.fromEntries(dataMap));
+
+    fs.writeFile(process.cwd() + path + templateName.replace(".mustache",""), output, err => {
+      if (err) {
+        console.error(err);
+      }
+      // file written successfully
+      console.log('File '.green + templateName.replace(".mustache","").bgWhite.black+' create successfully.'.green)
+    })
+  });
+}
+
 module.exports = {
   createStylePackage,
   createFrontpage,
-  createNavbarOffcanvas
+  createNavbarOffcanvas,
+  createFooter 
 }

@@ -45,6 +45,10 @@ const questions_theme_parts = [
                 value: 2,
                 name: `${ '2.'.green } Create Navbar Offcanvas file.`
             },
+            {
+                value: 3,
+                name: `${ '3.'.green } Create Footer file.`
+            },
         ]
     }
 ]

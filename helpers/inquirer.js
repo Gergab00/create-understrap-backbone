@@ -49,6 +49,14 @@ const questions_theme_parts = [
                 value: 3,
                 name: `${ '3.'.green } Create Footer file.`
             },
+            {
+                value: 4,
+                name: `${ '4.'.green } Create name of file.`
+            },
+            {
+                value: 0,
+                name: `${ '0.'.green } Exit`
+            },
         ]
     }
 ]
@@ -91,7 +99,6 @@ const pause = async() => {
 }
 
 const readInput = async( message, d ) => {
-
     const question = [
         {
             type: 'input',
@@ -103,11 +110,12 @@ const readInput = async( message, d ) => {
                     return 'Please enter a value';
                 }
                 return true;
-            }
+            },
         }
     ];
 
     const { desc } = await inquirer.prompt(question);
+
     return desc;
 }
 

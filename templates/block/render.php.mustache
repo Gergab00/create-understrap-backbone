@@ -1,0 +1,20 @@
+<?php
+/**
+ * 
+ * 
+ * @author {{author}}
+ * @version {{version}}
+ * @since {{version}}
+ * @package {{text_domain}}
+ * 
+ */
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
+
+extract( $attributes );
+
+?>
+
+<section <?php echo get_block_wrapper_attributes(['class' => 'my-class']); ?> data-block="{{slug}}">
+	<?php esc_html_e( '{{title}} – hello from a understrap-framwork-theme block!', '{{text_domain}}' ); ?>
+</section>

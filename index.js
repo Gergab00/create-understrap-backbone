@@ -1,5 +1,5 @@
 const { readInput, inquirerMenu, pause, templateThemeMenu } = require('./helpers/inquirer');
-const { createStylePackage, createFrontpage, createNavbarOffcanvas, createFooter } = require('./models/create');
+const { createStylePackage, createFrontpage, createNavbarOffcanvas, createFooter, createBlock } = require('./models/create');
 
 const main = async() => {
 
@@ -14,7 +14,7 @@ const main = async() => {
             case 1:
                 // Mostrar mensaje
                 
-                const theme_name = await readInput('Theme Name: ', 'Understrap Child');
+                const theme_name = await readInput('Theme Name: ', 'Understrap Child');//..
                 const theme_uri = await readInput('Theme URI: ', 'https://understrap.com');
                 const theme_slug = await readInput('Theme Slug: ', 'UnderstrapChild');
                 const theme_description = await readInput('Description: ', 'Understrap Child Theme');
@@ -34,12 +34,13 @@ const main = async() => {
                 "git_uri": git_uri
                 }
 
-                await createStylePackage(template);
+                await createStylePackage(template).then(() => console.log("Files was created...".green));
 
                 break;
             
-            case 2:
-
+            case 2:                    
+                console.log("Creating file, please wait...".cyan);
+                await createBlock().then(() => console.log("Block was created...".green));
                 break;
             case 3:
                 let opt_2 = await templateThemeMenu();
@@ -47,17 +48,19 @@ const main = async() => {
                 switch (opt_2) { 
                     case 1:
                         console.log("Creating file, please wait...".cyan);
-                        await createFrontpage().then(() => console.log("File created...".green));
+                        await createFrontpage().then(() => console.log("File was created...".green));
                         break;
                     case 2:
                         console.log("Creating file, please wait...".cyan);
-                        await createNavbarOffcanvas().then(() => console.log("File created...".green));
+                        await createNavbarOffcanvas().then(() => console.log("File was created...".green));
                         break;
                     case 3:
                         console.log("Creating file, please wait...".cyan);
-                        await createFooter().then(() => console.log("File created...".green));
+                        await createFooter().then(() => console.log("File was created...".green));
                         break;
-                        break
+                    case 4:
+                        break;
+                        
                 }
                     break;
 

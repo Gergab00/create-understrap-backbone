@@ -14,14 +14,14 @@ const main = async() => {
             case 1:
                 // Mostrar mensaje
                 
-                const theme_name = await readInput('Theme Name: ', 'Understrap Child');//..
+                const theme_name = await readInput('Theme Name: ', 'Understrap Framework Theme');//..
                 const theme_uri = await readInput('Theme URI: ', 'https://understrap.com');
-                const theme_slug = await readInput('Theme Slug: ', 'UnderstrapChild');
-                const theme_description = await readInput('Description: ', 'Understrap Child Theme');
+                const theme_slug = await readInput('Theme Slug: ', 'understrap-framework-theme');
+                const theme_description = await readInput('Description: ', 'Understrap child theme, modified to create a framework and develop child themes based on Understrap, with tools that help better ordering.');
                 const author = await readInput('Author: ', 'the Understrap Contributors');
-                const author_uri = await readInput('Author URI: ', 'https://github.com/understrap/understrap-child/graphs/contributors');
+                const author_uri = await readInput('Author URI: ', 'https://github.com/Gergab00/understrap-framework-theme/graphs/contributors');
                 const version = await readInput('Version: ', '1.1.0');
-                const git_uri = await readInput('Git URI: ', 'https://github.com/understrap/understrap-child.git');
+                const git_uri = await readInput('Git URI: ', 'https://github.com/Gergab00/understrap-framework-theme.git');
                 
                 const template = {
                 "theme_name" : theme_name,

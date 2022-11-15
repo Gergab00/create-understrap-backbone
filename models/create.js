@@ -40,7 +40,7 @@ const createStylePackage = async (template) => {
       Object.fromEntries(
         Object.entries(
           {
-            "name": template.theme_name,
+            "name": template.theme_slug,
             "version": template.version,
             "description": template.theme_description,
             "main": "index.js",
@@ -205,7 +205,7 @@ const createBlock = async () => {
     category
   } = prompts
 
-  let newMap = Object.entries({
+  const newMap = Object.entries({
     title,
     slug,
     description,
@@ -215,8 +215,10 @@ const createBlock = async () => {
     return x[1];
   });
 
-  let answers = await inquirer.prompt(newMap);
 
+  let answers = await inquirer.prompt(newMap);
+  answers.className = answers.title.replace(' ', '');
+  
   const mergeData = Object.assign(answers, Object.fromEntries(await getDataMap()));
   
   const outputTemplates = await getOutputTemplates(join(process.cwd(),'/node_modules/create-understrap-backbone/templates/block'));
@@ -224,8 +226,11 @@ const createBlock = async () => {
   await Promise.all(
     Object.keys(outputTemplates).map(
       async (outputFile) => {
-        await writeOutputTemplate(outputTemplates[outputFile], join(process.cwd(), '/blocks/src/', mergeData.slug, outputFile), mergeData)
-          .then(() => console.log('File '.green + outputFile.bgWhite.black + ' create successfully.'.green));
+        await writeOutputTemplate(
+          outputTemplates[outputFile],
+          join(process.cwd(), '/blocks/src/', mergeData.slug, ('register-block.php' == outputFile) ? outputFile = `${mergeData.slug}.php` : outputFile),
+          mergeData
+        ).then(() => console.log('File '.green + outputFile.bgWhite.black + ' create successfully.'.green));
       }
     ));
 

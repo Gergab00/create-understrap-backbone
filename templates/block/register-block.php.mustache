@@ -38,12 +38,14 @@ class {{className}} {
                  *
                  * @return string The rendered output.
                  */
-                'render_callback' => function ($attributes, $content, $block) {
-                    ob_start();
-                    require_once get_theme_file_path('blocks/build/{{slug}}/render.php');
-                    return ob_get_clean();
-                },
+                'render_callback' => array( get_called_class(), 'renderBlock' ),
             ));
+    }
+
+    function renderBlock($attributes, $content, $block) {
+        ob_start();
+        require_once get_theme_file_path('blocks/build/{{slug}}/render.php');
+        return ob_get_clean();
     }
 
 }
